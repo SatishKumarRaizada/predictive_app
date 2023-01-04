@@ -26,6 +26,9 @@ dependencies:
   badges: ^2.0.3
   percent_indicator: ^4.2.2
   device_info_plus: ^8.0.0
+  flutter_calendar_carousel: ^2.4.1
+  table_calendar: ^3.0.8
+  calendar_view: ^1.0.1
 
 dev_dependencies:
   flutter_test:

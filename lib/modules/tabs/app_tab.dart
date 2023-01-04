@@ -21,46 +21,43 @@ class _AppTabsState extends State<AppTabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: <Widget>[
-            NavigationRail(
-              selectedIndex: _selectedIndex,
-              groupAlignment: groupAligment,
-              useIndicator: true,
-              indicatorColor: AppColor.appColor.withOpacity(0.2),
-              onDestinationSelected: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              labelType: labelType,
-              destinations: const <NavigationRailDestination>[
-                NavigationRailDestination(
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.analytics_outlined),
-                  selectedIcon: Icon(Icons.analytics),
-                  label: Text('Predictive Analytics'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.document_scanner_outlined),
-                  selectedIcon: Icon(Icons.document_scanner),
-                  label: Text('Prescriptive Analytics'),
-                ),
-              ],
-            ),
-            const VerticalDivider(thickness: 1, width: 1),
-            // This is the main content.
-            Expanded(
-              child: _appTabs[_selectedIndex],
-            ),
-          ],
-        ),
+      body: Row(
+        children: <Widget>[
+          NavigationRail(
+            selectedIndex: _selectedIndex,
+            groupAlignment: groupAligment,
+            useIndicator: true,
+            indicatorColor: AppColor.appColor.withOpacity(0.2),
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: labelType,
+            destinations: const <NavigationRailDestination>[
+              NavigationRailDestination(
+                icon: Icon(Icons.home_outlined),
+                selectedIcon: Icon(Icons.home),
+                label: Text('Home'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.analytics_outlined),
+                selectedIcon: Icon(Icons.analytics),
+                label: Text('Predictive Analytics'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.document_scanner_outlined),
+                selectedIcon: Icon(Icons.document_scanner),
+                label: Text('Prescriptive Analytics'),
+              ),
+            ],
+          ),
+          const VerticalDivider(thickness: 1, width: 1),
+          // This is the main content.
+          Expanded(
+            child: _appTabs[_selectedIndex],
+          ),
+        ],
       ),
     );
   }

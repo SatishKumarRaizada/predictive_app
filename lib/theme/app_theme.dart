@@ -6,11 +6,11 @@ class AppTheme {
     scaffoldBackgroundColor: AppColor.whiteColor,
     primarySwatch: AppColor.lightThemeColors,
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    fontFamily: 'FontRegular',
+    fontFamily: 'AppFontRegular',
     textTheme: const TextTheme(
       bodyText2: TextStyle(
         fontSize: 16,
-        fontFamily: 'FontRegular',
+        fontFamily: 'AppFontRegular',
       ),
     ),
     primaryIconTheme: IconThemeData(color: AppColor.appColor, size: 25),
@@ -21,6 +21,7 @@ class AppTheme {
       fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       errorStyle: const TextStyle(fontSize: 16),
+      hoverColor: AppColor.appColor.withOpacity(0.2),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: BorderSide(color: AppColor.blackColor, width: 0.5),
@@ -41,7 +42,7 @@ class AppTheme {
       iconTheme: IconThemeData(color: AppColor.appColor),
       foregroundColor: AppColor.blackColor,
       titleTextStyle: TextStyle(
-        fontFamily: 'FontRegular',
+        fontFamily: 'AppFontRegular',
         fontSize: 20,
         color: AppColor.blackColor,
       ),
@@ -52,7 +53,7 @@ class AppTheme {
         elevation: 0.0,
         padding: const EdgeInsets.all(10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        textStyle: const TextStyle(fontSize: 18, fontFamily: 'FontRegular'),
+        textStyle: const TextStyle(fontSize: 18, fontFamily: 'AppFontRegular'),
         foregroundColor: AppColor.whiteColor,
       ),
     ),
@@ -64,7 +65,7 @@ class AppTheme {
         side: BorderSide(color: AppColor.appColor, width: 0.4),
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        textStyle: const TextStyle(fontSize: 16, fontFamily: 'FontRegular'),
+        textStyle: const TextStyle(fontSize: 16, fontFamily: 'AppFontRegular'),
       ),
     ),
     iconTheme: IconThemeData(color: AppColor.appColor),
