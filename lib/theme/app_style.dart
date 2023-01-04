@@ -106,4 +106,17 @@ class Styles {
     fontFamily: 'AppFontRegular',
     color: AppColor.whiteColor,
   );
+
+  // White color fonts
+  static TextStyle whiteText18 = TextStyle(
+    fontSize: 18,
+    fontFamily: 'AppFontRegular',
+    color: AppColor.whiteColor,
+  );
+
+  // Light color fonts
+  static const TextStyle lightText18 = TextStyle(
+    fontSize: 18,
+    fontFamily: 'AppFontLight',
+  );
 }

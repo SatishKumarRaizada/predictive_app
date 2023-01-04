@@ -55,12 +55,12 @@ class _HomePageState extends State<HomePage> {
                               TableRow(
                                 decoration: BoxDecoration(color: AppColor.appColor),
                                 children: [
-                                  tableRowWidget("Gases", style: Styles.whiteBold18),
-                                  tableRowWidget("Check", style: Styles.whiteBold18),
-                                  tableRowWidget("Risk", style: Styles.whiteBold18),
-                                  tableRowWidget("PPM", style: Styles.whiteBold18),
-                                  tableRowWidget("Date", style: Styles.whiteBold18),
-                                  tableRowWidget("Status", style: Styles.whiteBold18),
+                                  tableRowWidget("Gases", style: Styles.whiteText18),
+                                  tableRowWidget("Check", style: Styles.whiteText18),
+                                  tableRowWidget("Risk", style: Styles.whiteText18),
+                                  tableRowWidget("PPM", style: Styles.whiteText18),
+                                  tableRowWidget("Date", style: Styles.whiteText18),
+                                  tableRowWidget("Status", style: Styles.whiteText18),
                                 ],
                               ),
                               TableRow(
@@ -134,9 +134,9 @@ class _HomePageState extends State<HomePage> {
                         tablePadding: EdgeInsets.all(1),
                       ),
                       shouldFillViewport: true,
-                      firstDay: DateTime(2020),
-                      lastDay: DateTime(2021),
-                      focusedDay: DateTime(2020),
+                      firstDay: DateTime(2022),
+                      lastDay: DateTime(2050),
+                      focusedDay: DateTime.now(),
                     ),
                   ),
                 ),
@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
-  Widget tableRowWidget(String value, {TextStyle style = Styles.text18}) {
+  Widget tableRowWidget(String value, {TextStyle style = Styles.lightText18}) {
     return Padding(padding: const EdgeInsets.all(10), child: Text(value, style: style));
   }
 }
