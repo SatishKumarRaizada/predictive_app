@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:predictive_app/modules/home/chart/home_chart.dart';
+import 'package:predictive_app/modules/predictive/chart/simple_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
-import 'package:predictive_app/widgets/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
@@ -70,10 +72,10 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {},
                                     icon: const Icon(Icons.square_outlined),
                                   ),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
+                                  tableRowWidget("Normal"),
+                                  tableRowWidget("100"),
+                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("Green"),
                                 ],
                               ),
                               TableRow(
@@ -83,10 +85,10 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {},
                                     icon: const Icon(Icons.square_outlined),
                                   ),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
+                                  tableRowWidget("Normal"),
+                                  tableRowWidget("100"),
+                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("Green"),
                                 ],
                               ),
                               TableRow(
@@ -96,10 +98,10 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {},
                                     icon: const Icon(Icons.square_outlined),
                                   ),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
+                                  tableRowWidget("Normal"),
+                                  tableRowWidget("100"),
+                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("Green"),
                                 ],
                               ),
                               TableRow(
@@ -109,10 +111,10 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {},
                                     icon: const Icon(Icons.square_outlined),
                                   ),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
-                                  tableRowWidget("Hydrogen"),
+                                  tableRowWidget("Normal"),
+                                  tableRowWidget("100"),
+                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("Green"),
                                 ],
                               ),
                             ],
@@ -122,11 +124,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                SizedBox(width: width * 0.02),
                 // Work in progress
                 Expanded(
-                  child: SizedBox(
+                  child: Container(
                     height: 300,
                     width: 100,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 0.5),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: TableCalendar(
                       calendarStyle: const CalendarStyle(
                         cellMargin: EdgeInsets.all(0),
@@ -142,6 +149,20 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            SizedBox(height: height * 0.04),
+            const Text('Graph heading here', style: Styles.text20),
+            SizedBox(height: height * 0.01),
+            SizedBox(
+              height: height * 0.3,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const HomePageChart(),
+              ),
+            )
           ],
         ),
       )),
