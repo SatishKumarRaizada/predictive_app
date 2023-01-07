@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:predictive_app/modules/predictive/chart/simple_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
@@ -108,25 +109,16 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                 ),
                 SizedBox(width: width * 0.02),
                 // Work in progress
-                Expanded(
-                  child: Container(
-                    height: 300,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 0.5),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TableCalendar(
-                      calendarStyle: const CalendarStyle(
-                        cellMargin: EdgeInsets.all(0),
-                        cellPadding: EdgeInsets.all(1),
-                        tablePadding: EdgeInsets.all(1),
-                      ),
-                      shouldFillViewport: true,
-                      firstDay: DateTime(2022),
-                      lastDay: DateTime(2050),
-                      focusedDay: DateTime.now(),
-                    ),
+                Container(
+                  height: 300,
+                  width: width * 0.3,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: CalendarDatePicker2(
+                    config: CalendarDatePicker2Config(),
+                    initialValue: [],
                   ),
                 ),
               ],
