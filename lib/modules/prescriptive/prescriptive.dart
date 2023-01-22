@@ -1,5 +1,7 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:predictive_app/modules/prescriptive/chart/duval_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
@@ -17,6 +19,13 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
   @override
   void initState() {
     super.initState();
+    processCsv();
+  }
+
+  processCsv() async {
+    var result = await rootBundle.loadString("assets/test.csv");
+    final csvTable = const CsvToListConverter().convert(result);
+    return csvTable;
   }
 
   @override
@@ -137,7 +146,7 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
               ),
               SizedBox(height: height * 0.02),
               const Text('Graph heading here', style: Styles.text20),
-              const DuvalPrescriptivegraph()
+              SizedBox(width: 400, height: 400, child: const DuvalPrescriptivegraph())
             ],
           ),
         ),

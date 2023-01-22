@@ -1,10 +1,10 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:predictive_app/modules/home/chart/home_chart.dart';
-import 'package:predictive_app/modules/predictive/chart/simple_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,6 +13,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    processCsv();
+  }
+
+  processCsv() async {
+    var result = await rootBundle.loadString("assets/test.csv");
+    final csvTable = const CsvToListConverter().convert(result);
+    return csvTable;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

@@ -1,57 +1,96 @@
 import 'package:flutter/material.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
+import 'package:flutter_inline_webview_macos/flutter_inline_webview_macos/flutter_inline_webview_macos_controller.dart';
+import 'package:flutter_inline_webview_macos/flutter_inline_webview_macos/types.dart';
+import 'package:flutter_inline_webview_macos/flutter_inline_webview_macos.dart';
 
-class DuvalPrescriptivegraph extends StatelessWidget {
-  const DuvalPrescriptivegraph({super.key});
+class DuvalPrescriptivegraph extends StatefulWidget {
+  const DuvalPrescriptivegraph({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
-    return Container(
-      width: width,
-      height: height * 0.7,
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.2),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: const IframeView(source: "assets/web/chart.html"),
-    );
-  }
+  State<DuvalPrescriptivegraph> createState() => _DuvalPrescriptivegraphState();
 }
 
-class IframeView extends StatefulWidget {
-  final String source;
-  const IframeView({Key? key, required this.source}) : super(key: key);
-  @override
-  IframeViewState createState() => IframeViewState();
-}
+class _DuvalPrescriptivegraphState extends State<DuvalPrescriptivegraph> {
+  String _platformVersion = 'Unknown';
+  final _flutterWebviewMacosPlugin = FlutterInlineWebviewMacos();
+  bool _hide = false;
 
-class IframeViewState extends State<IframeView> {
-  // Widget _iframeWidget;
-  final IFrameElement _iframeElement = IFrameElement();
+  InlineWebViewMacOsController? _controller;
 
   @override
   void initState() {
     super.initState();
-    _iframeElement.src = widget.source;
-    _iframeElement.style.border = 'none';
+    initPlatformState();
+  }
 
-    //ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(
-      'iframeElement',
-      (int viewId) => _iframeElement,
-    );
+  Future<void> initPlatformState() async {
+    String platformVersion;
+    try {
+      platformVersion =
+          await _flutterWebviewMacosPlugin.getPlatformVersion() ?? 'Unknown platform version';
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return HtmlElementView(
-      key: UniqueKey(),
-      viewType: 'iframeElement',
+    return Center(
+      child: Column(
+        children: [
+          Text('Running on: $_platformVersion\n'),
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  _hide = !_hide;
+                });
+                print("toggle hide!");
+              },
+              child: Text("toggle hide ${!_hide}")),
+          _hide
+              ? Column(
+                  children: [
+                    TextButton(
+                        onPressed: () async {
+                          await _controller!.loadUrl(
+                              urlRequest: URLRequest(url: Uri.parse("https://youtube.com")));
+                        },
+                        child: const Text('load:"youtube.com"')),
+                    TextButton(
+                        onPressed: () async {
+                          await _controller!
+                              .loadUrl(urlRequest: URLRequest(url: Uri.parse("https://zenn.dev")));
+                        },
+                        child: const Text('load:"zenn.dev"')),
+                    TextButton(
+                        onPressed: () async {
+                          final url = await _controller!.getUrl();
+                          print(url);
+                        },
+                        child: const Text("getUrl")),
+                    InlineWebViewMacOs(
+                      key: widget.key,
+                      width: 500,
+                      height: 300,
+                      onWebViewCreated: (controller) {
+                        _controller = controller;
+                        // _controller!.loadUrl(
+                        //     urlRequest: URLRequest(
+                        //         url: Uri.parse("https://google.com")));
+                      },
+                    ),
+                  ],
+                )
+              : const SizedBox()
+        ],
+      ),
     );
   }
 }
