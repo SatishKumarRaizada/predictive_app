@@ -29,7 +29,6 @@ dependencies:
   graphic: ^1.0.1
   calendar_date_picker2: ^0.3.6
   flutter_inline_webview_macos: ^0.0.4
-  excel: ^2.0.1
   path: ^1.8.2
   csv: ^5.0.1
 

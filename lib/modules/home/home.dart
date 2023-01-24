@@ -13,16 +13,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<List<dynamic>> data = [];
+
   @override
   void initState() {
     super.initState();
     processCsv();
   }
 
+  // Loading data from the CSV file
   processCsv() async {
     var result = await rootBundle.loadString("assets/test.csv");
-    final csvTable = const CsvToListConverter().convert(result);
-    return csvTable;
+    data = const CsvToListConverter().convert(result);
+    return data;
   }
 
   @override
@@ -87,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   tableRowWidget("Normal"),
                                   tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("2023-01-23 23:12:00"),
                                   tableRowWidget("Green"),
                                 ],
                               ),
@@ -100,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   tableRowWidget("Normal"),
                                   tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("2023-01-24 23:12:00"),
                                   tableRowWidget("Green"),
                                 ],
                               ),
@@ -113,20 +116,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   tableRowWidget("Normal"),
                                   tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.square_outlined),
-                                  ),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
+                                  tableRowWidget("2023-01-25 23:12:00"),
                                   tableRowWidget("Green"),
                                 ],
                               ),
@@ -157,14 +147,14 @@ class _HomePageState extends State<HomePage> {
             const Text('Graph heading here', style: Styles.text20),
             SizedBox(height: height * 0.01),
             SizedBox(
-              height: height * 0.3,
+              height: height * 0.35,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const HomePageChart(),
+                child: HomePageChart(),
               ),
             )
           ],
