@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:predictive_app/modules/home/chart/home_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
+import 'package:predictive_app/modules/home/chart/table_content.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +14,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final filter = <ButtonFilter>[
+    ButtonFilter(isSelected: true, name: 'Day'),
+    ButtonFilter(isSelected: false, name: 'Hour'),
+    ButtonFilter(isSelected: false, name: 'Month'),
+  ];
   List<List<dynamic>> data = [];
+  final isSelected = false;
 
   @override
   void initState() {
@@ -51,78 +58,50 @@ class _HomePageState extends State<HomePage> {
                     width: width * 0.9,
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            const Text('Predictive Analytics of Gases Trends'),
-                            SizedBox(width: width * 0.02),
-                            Chip(
-                              label: Text('Day', style: Styles.whiteText14),
-                              backgroundColor: AppColor.appColor,
-                            ),
-                            SizedBox(width: width * 0.01),
-                            const Chip(label: Text('Hour')),
-                            SizedBox(width: width * 0.01),
-                            const Chip(label: Text('month')),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.02),
-                        Column(children: <Widget>[
-                          Table(
-                            border: TableBorder.all(color: AppColor.blackColor, width: 0.2),
+                        SizedBox(
+                          height: height * 0.04,
+                          child: Row(
                             children: [
-                              TableRow(
-                                decoration: BoxDecoration(color: AppColor.appColor),
-                                children: [
-                                  tableRowWidget("Gases", style: Styles.whiteText18),
-                                  tableRowWidget("Check", style: Styles.whiteText18),
-                                  tableRowWidget("Risk", style: Styles.whiteText18),
-                                  tableRowWidget("PPM", style: Styles.whiteText18),
-                                  tableRowWidget("Date", style: Styles.whiteText18),
-                                  tableRowWidget("Status", style: Styles.whiteText18),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.square_outlined),
-                                  ),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2023-01-23 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.square_outlined),
-                                  ),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2023-01-24 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.square_outlined),
-                                  ),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2023-01-25 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
+                              const Text('Predictive analytics of Gases trends'),
+                              SizedBox(width: width * 0.04),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: filter.length,
+                                itemBuilder: (_, index) {
+                                  return Container(
+                                    margin: EdgeInsets.only(right: width * 0.01),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        backgroundColor: filter[index].isSelected!
+                                            ? AppColor.appColor
+                                            : AppColor.greyColor,
+                                      ),
+                                      onPressed: () {
+                                        for (var i = 0; i < filter.length; i++) {
+                                          filter[i].isSelected = false;
+                                        }
+                                        filter[index].isSelected = true;
+                                        setState(() {});
+                                      },
+                                      child: Text(
+                                        filter[index].name ?? '',
+                                        style: TextStyle(
+                                          color: filter[index].isSelected!
+                                              ? AppColor.whiteColor
+                                              : AppColor.blackColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
-                        ])
+                        ),
+                        SizedBox(height: height * 0.02),
+                        SizedBox(width: width * 0.9, child: const DataTableWidget())
                       ],
                     ),
                   ),
@@ -143,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            SizedBox(height: height * 0.04),
+            SizedBox(height: height * 0.02),
             const Text('Graph heading here', style: Styles.text20),
             SizedBox(height: height * 0.01),
             SizedBox(
@@ -161,6 +140,10 @@ class _HomePageState extends State<HomePage> {
         ),
       )),
     );
+  }
+
+  TableRow _getTableWidgets() {
+    return TableRow();
   }
 
   List<Widget> _getActionHeaderWidgets() {
@@ -187,4 +170,10 @@ class _HomePageState extends State<HomePage> {
   Widget tableRowWidget(String value, {TextStyle style = Styles.lightText18}) {
     return Padding(padding: const EdgeInsets.all(10), child: Text(value, style: style));
   }
+}
+
+class ButtonFilter {
+  final String? name;
+  bool? isSelected;
+  ButtonFilter({this.isSelected, this.name});
 }

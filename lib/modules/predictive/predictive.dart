@@ -2,10 +2,11 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:predictive_app/modules/home/home.dart';
+import 'package:predictive_app/modules/predictive/chart/predict_table_content.dart';
 import 'package:predictive_app/modules/predictive/chart/simple_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class PredictiveHome extends StatefulWidget {
   const PredictiveHome({Key? key}) : super(key: key);
@@ -14,6 +15,11 @@ class PredictiveHome extends StatefulWidget {
 }
 
 class _PredictiveHomeState extends State<PredictiveHome> {
+  final filter = <ButtonFilter>[
+    ButtonFilter(isSelected: true, name: 'Day'),
+    ButtonFilter(isSelected: false, name: 'Hour'),
+    ButtonFilter(isSelected: false, name: 'Month'),
+  ];
   @override
   void initState() {
     super.initState();
@@ -49,74 +55,50 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                     width: width * 0.9,
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            const Text('Predictive Analytics of Gases Trends'),
-                            SizedBox(width: width * 0.02),
-                            Chip(
-                              label: Text('Day', style: Styles.whiteText14),
-                              backgroundColor: AppColor.appColor,
-                            ),
-                            SizedBox(width: width * 0.01),
-                            const Chip(label: Text('Hour')),
-                            SizedBox(width: width * 0.01),
-                            const Chip(label: Text('month')),
-                          ],
-                        ),
-                        SizedBox(height: height * 0.02),
-                        Column(children: <Widget>[
-                          Table(
-                            border: TableBorder.all(color: AppColor.blackColor, width: 0.2),
+                        SizedBox(
+                          height: height * 0.04,
+                          child: Row(
                             children: [
-                              TableRow(
-                                decoration: BoxDecoration(color: AppColor.appColor),
-                                children: [
-                                  tableRowWidget("Gases", style: Styles.whiteText18),
-                                  tableRowWidget("Risk", style: Styles.whiteText18),
-                                  tableRowWidget("PPM", style: Styles.whiteText18),
-                                  tableRowWidget("Date", style: Styles.whiteText18),
-                                  tableRowWidget("Status", style: Styles.whiteText18),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  tableRowWidget("Methane"),
-                                  tableRowWidget("Normal"),
-                                  tableRowWidget("100"),
-                                  tableRowWidget("2022-06-10 23:12:00"),
-                                  tableRowWidget("Green"),
-                                ],
+                              const Text('Predictive analytics of Gases trends'),
+                              SizedBox(width: width * 0.04),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: filter.length,
+                                itemBuilder: (_, index) {
+                                  return Container(
+                                    margin: EdgeInsets.only(right: width * 0.01),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        backgroundColor: filter[index].isSelected!
+                                            ? AppColor.appColor
+                                            : AppColor.greyColor,
+                                      ),
+                                      onPressed: () {
+                                        for (var i = 0; i < filter.length; i++) {
+                                          filter[i].isSelected = false;
+                                        }
+                                        filter[index].isSelected = true;
+                                        setState(() {});
+                                      },
+                                      child: Text(
+                                        filter[index].name ?? '',
+                                        style: TextStyle(
+                                          color: filter[index].isSelected!
+                                              ? AppColor.whiteColor
+                                              : AppColor.blackColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
-                        ])
+                        ),
+                        SizedBox(height: height * 0.02),
+                        SizedBox(width: width * 0.9, child: const PredictiveDataTableWidget())
                       ],
                     ),
                   ),
