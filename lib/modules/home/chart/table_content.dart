@@ -14,6 +14,7 @@ class DataTableWidget extends StatelessWidget {
       headingRowColor: MaterialStateProperty.all(AppColor.appColor),
       columns: const [
         DataColumn(label: Text('Gases')),
+        DataColumn(label: Text('Checks')),
         DataColumn(label: Text('Risk')),
         DataColumn(label: Text('PPM')),
         DataColumn(label: Text('Date')),
@@ -29,6 +30,15 @@ class DataTableWidget extends StatelessWidget {
         return DataRow(
           cells: <DataCell>[
             DataCell(Text(element.name)),
+            DataCell(
+              IconButton(
+                onPressed: () {
+                  final ind = gases.indexOf(element);
+                  onChage(ind);
+                },
+                icon: Icon(element.isSelected ? Icons.check_box : Icons.check_box_outline_blank),
+              ),
+            ),
             DataCell(Text(element.risk ? 'High' : 'Normal')),
             DataCell(Text(element.ppm)),
             DataCell(Text(element.date)),

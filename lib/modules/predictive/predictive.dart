@@ -4,10 +4,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:predictive_app/modules/home/data/gase_name.dart';
+import 'package:predictive_app/modules/predictive/data/gase_name.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
-import 'package:predictive_app/modules/home/chart/table_content.dart';
+import 'package:predictive_app/modules/predictive/chart/table_content.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PredictiveHome extends StatefulWidget {
