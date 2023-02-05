@@ -1,3 +1,5 @@
+// TODO Implement this library.
+
 const areaStackGradientData = [
   {'day': 'Mon', 'value': 140, 'group': 1},
   {'day': 'Tue', 'value': 232, 'group': 1},
@@ -44,6 +46,7 @@ const lineMarkerData = [
   {'day': 'Fri', 'value': 12, 'group': 'Highest'},
   {'day': 'Sat', 'value': 12, 'group': 'Highest'},
   {'day': 'Sun', 'value': 9, 'group': 'Highest'},
+  {'day': 'Sun', 'value': 99, 'group': 'Highest'},
   {'day': 'Mon', 'value': 1, 'group': 'Lowest'},
   {'day': 'Tue', 'value': -2, 'group': 'Lowest'},
   {'day': 'Wed', 'value': 2, 'group': 'Lowest'},
