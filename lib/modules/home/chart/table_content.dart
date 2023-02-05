@@ -1,87 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:predictive_app/theme/app_color.dart';
+import '../data/gase_name.dart';
 
-class DataTableWidget extends StatefulWidget {
-  const DataTableWidget({super.key});
-  @override
-  State<DataTableWidget> createState() => _DataTableWidgetState();
-}
-
-class _DataTableWidgetState extends State<DataTableWidget> {
-  final data = <GasDetailModel>[
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Hydrogen',
-      ppm: '100',
-      risk: false,
-      status: 'Green',
-      value: '15.3',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Acetylene',
-      ppm: '10',
-      risk: false,
-      status: 'Green',
-      value: '0.8',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Water',
-      ppm: '10',
-      risk: false,
-      status: 'Green',
-      value: '2',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Carbon Monoxide',
-      ppm: '60',
-      risk: false,
-      status: 'Green',
-      value: '15.3',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Hydrogen',
-      ppm: '500',
-      risk: false,
-      status: 'Green',
-      value: '320.6',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Ethylene',
-      ppm: '10',
-      risk: false,
-      status: 'Green',
-      value: '2',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Ethane',
-      ppm: '50',
-      risk: false,
-      status: 'Green',
-      value: '3.9',
-      isSelected: false,
-    ),
-    GasDetailModel(
-      date: '20/01/2023',
-      name: 'Methane',
-      ppm: '100',
-      risk: false,
-      status: 'Green',
-      value: '9.4',
-      isSelected: false,
-    )
-  ];
+class DataTableWidget extends StatelessWidget {
+  final Function onChage;
+  final List<GasDetailModel> gases;
+  const DataTableWidget({super.key, required this.onChage, required this.gases});
 
   @override
   Widget build(BuildContext context) {
@@ -101,17 +25,20 @@ class _DataTableWidgetState extends State<DataTableWidget> {
   }
 
   List<DataRow> getRows() {
-    return data.map(
+    return gases.map(
       ((element) {
         return DataRow(
           cells: <DataCell>[
             DataCell(Text(element.name)),
-            DataCell(IconButton(
+            DataCell(
+              IconButton(
                 onPressed: () {
-                  element.isSelected = !element.isSelected;
-                  setState(() {});
+                  final ind = gases.indexOf(element);
+                  onChage(ind);
                 },
-                icon: Icon(element.isSelected ? Icons.check_box : Icons.check_box_outline_blank))),
+                icon: Icon(element.isSelected ? Icons.check_box : Icons.check_box_outline_blank),
+              ),
+            ),
             DataCell(Text(element.risk ? 'High' : 'Normal')),
             DataCell(Text(element.ppm)),
             DataCell(Text(element.date)),
@@ -121,22 +48,4 @@ class _DataTableWidgetState extends State<DataTableWidget> {
       }),
     ).toList();
   }
-}
-
-class GasDetailModel {
-  final String name;
-  final String value;
-  final bool risk;
-  bool isSelected;
-  final String ppm;
-  final String date;
-  final String status;
-  GasDetailModel(
-      {required this.date,
-      required this.name,
-      required this.ppm,
-      required this.risk,
-      required this.status,
-      required this.value,
-      this.isSelected = false});
 }
