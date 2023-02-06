@@ -3,6 +3,7 @@ import 'package:csv/csv.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:predictive_app/modules/predictive/data/gase_name.dart';
 import 'package:predictive_app/theme/app_color.dart';
@@ -48,8 +49,15 @@ class _PredictiveHomeState extends State<PredictiveHome> {
   getLocaleData(DateTime date, {int index = -1, bool isSelected = true}) async {
     graphListData.clear();
     titleString.clear();
-    var result = await rootBundle.loadString("assets/test2.csv");
-    final data = const CsvToListConverter().convert(result);
+    List<dynamic> data;
+    final localeData = await getData();
+    if (localeData != null) {
+      data = localeData;
+    } else {
+      var result = await rootBundle.loadString("assets/test2.csv");
+      data = const CsvToListConverter().convert(result);
+    }
+
     // saving data to local DB
     final endDate = date.add(const Duration(days: 29));
     for (var i = 0; i < data.length; i++) {
@@ -75,6 +83,17 @@ class _PredictiveHomeState extends State<PredictiveHome> {
     showingBarGroups = rawBarGroups;
     gasLength = titleString.length;
     setState(() {});
+  }
+
+  void saveData(List<dynamic> data) async {
+    var box = await Hive.openBox('predictivePageChart');
+    await box.put('predictiveChart', data);
+  }
+
+  getData() async {
+    var box = await Hive.openBox('predictivePageChart');
+    final data = await box.get('predictiveChart');
+    return data;
   }
 
   @override

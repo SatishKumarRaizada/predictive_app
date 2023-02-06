@@ -192,7 +192,6 @@ class _HomePageState extends State<HomePage> {
                     width: width * 0.9,
                     child: Column(
                       children: [
-                        SizedBox(height: height * 0.02),
                         SizedBox(
                           width: width * 0.9,
                           child: DataTableWidget(
@@ -246,7 +245,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: height * 0.01),
             const Text('Gases state graph'),
             Container(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               height: 60,
               child: Center(
                 child: Row(
@@ -254,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: TextField(
                         controller: startDateInput,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             icon: Icon(Icons.calendar_today), labelText: "Start Date"),
                         readOnly: true,
                         onTap: () async {
@@ -273,11 +272,11 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Expanded(
                       child: TextField(
                         controller: endDateInput,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             icon: Icon(Icons.calendar_today), labelText: "End Date"),
                         readOnly: true,
                         onTap: () async {
@@ -310,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                 series: <ChartSeries<ChartData, DateTime>>[
                   LineSeries<ChartData, DateTime>(
                       dataSource: chartData,
-                      markerSettings: MarkerSettings(isVisible: true),
+                      markerSettings: const MarkerSettings(isVisible: true),
                       xValueMapper: (ChartData data, _) => data.x,
                       yValueMapper: (ChartData data, _) => data.y),
                 ],

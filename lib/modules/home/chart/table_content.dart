@@ -5,8 +5,7 @@ import '../data/gase_name.dart';
 class DataTableWidget extends StatelessWidget {
   final Function onChage;
   final List<GasDetailModel> gases;
-  const DataTableWidget(
-      {super.key, required this.onChage, required this.gases});
+  const DataTableWidget({super.key, required this.onChage, required this.gases});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +35,9 @@ class DataTableWidget extends StatelessWidget {
                   final ind = gases.indexOf(element);
                   onChage(ind);
                 },
-                icon: Icon(element.isSelected
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank),
+                icon: Icon(
+                  element.isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+                ),
               ),
             ),
             DataCell(Text(element.ppm.toString())),
