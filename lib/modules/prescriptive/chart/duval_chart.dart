@@ -27,8 +27,8 @@ class _DuvalPrescriptivegraphState extends State<DuvalPrescriptivegraph> {
   Future<void> initPlatformState() async {
     String platformVersion;
     try {
-      platformVersion =
-          await _flutterWebviewMacosPlugin.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await _flutterWebviewMacosPlugin.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -60,13 +60,15 @@ class _DuvalPrescriptivegraphState extends State<DuvalPrescriptivegraph> {
                     TextButton(
                         onPressed: () async {
                           await _controller!.loadUrl(
-                              urlRequest: URLRequest(url: Uri.parse("https://youtube.com")));
+                              urlRequest: URLRequest(
+                                  url: Uri.parse("https://youtube.com")));
                         },
                         child: const Text('load:"youtube.com"')),
                     TextButton(
                         onPressed: () async {
-                          await _controller!
-                              .loadUrl(urlRequest: URLRequest(url: Uri.parse("https://zenn.dev")));
+                          await _controller!.loadUrl(
+                              urlRequest: URLRequest(
+                                  url: Uri.parse("https://zenn.dev")));
                         },
                         child: const Text('load:"zenn.dev"')),
                     TextButton(

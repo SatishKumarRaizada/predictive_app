@@ -8,7 +8,6 @@ import 'package:predictive_app/modules/predictive/data/gase_name.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
 import 'package:predictive_app/modules/predictive/chart/table_content.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PredictiveHome extends StatefulWidget {
   const PredictiveHome({Key? key}) : super(key: key);
@@ -34,7 +33,6 @@ class _PredictiveHomeState extends State<PredictiveHome> {
   final graphListData = <BarChartGroupData>[];
   int touchedGroupIndex = -1;
   var titleString = <String>[];
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool ethaneSelected = true;
   bool methaneSelected = true;
   bool acetyleneSelected = true;
@@ -52,9 +50,7 @@ class _PredictiveHomeState extends State<PredictiveHome> {
     titleString.clear();
     var result = await rootBundle.loadString("assets/test2.csv");
     final data = const CsvToListConverter().convert(result);
-    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
     // saving data to local DB
-    await sharedPref.setString('homeData', data.toString());
     final endDate = date.add(const Duration(days: 29));
     for (var i = 0; i < data.length; i++) {
       if (i > 0) {

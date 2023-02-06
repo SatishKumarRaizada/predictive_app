@@ -5,7 +5,8 @@ import '../data/gase_name.dart';
 class DataTableWidget extends StatelessWidget {
   final Function onChage;
   final List<GasDetailModel> gases;
-  const DataTableWidget({super.key, required this.onChage, required this.gases});
+  const DataTableWidget(
+      {super.key, required this.onChage, required this.gases});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +15,7 @@ class DataTableWidget extends StatelessWidget {
       headingRowColor: MaterialStateProperty.all(AppColor.appColor),
       columns: const [
         DataColumn(label: Text('Gases')),
-        DataColumn(label: Text('Checks')),
-        DataColumn(label: Text('Risk')),
+        DataColumn(label: Text('Show graph')),
         DataColumn(label: Text('PPM')),
         DataColumn(label: Text('Date')),
         DataColumn(label: Text('Status')),
@@ -36,11 +36,12 @@ class DataTableWidget extends StatelessWidget {
                   final ind = gases.indexOf(element);
                   onChage(ind);
                 },
-                icon: Icon(element.isSelected ? Icons.check_box : Icons.check_box_outline_blank),
+                icon: Icon(element.isSelected
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank),
               ),
             ),
-            DataCell(Text(element.risk ? 'High' : 'Normal')),
-            DataCell(Text(element.ppm)),
+            DataCell(Text(element.ppm.toString())),
             DataCell(Text(element.date)),
             DataCell(Text(element.status)),
           ],
