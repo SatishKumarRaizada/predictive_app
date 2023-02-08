@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 // Loading data from the CSV file
 String getGasStatus(String gasName, double value) {
   if (gasName == 'Hydrogen') {

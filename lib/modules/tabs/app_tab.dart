@@ -11,7 +11,7 @@ class AppTabs extends StatefulWidget {
 }
 
 class _AppTabsState extends State<AppTabs> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   NavigationRailLabelType labelType = NavigationRailLabelType.all;
   bool showLeading = false;
   bool showTrailing = false;

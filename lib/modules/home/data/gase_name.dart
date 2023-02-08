@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 final allGasesTableList = <GasDetailModel>[
   GasDetailModel(
     date: '20/01/2023',
