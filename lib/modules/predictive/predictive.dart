@@ -201,6 +201,7 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                         SizedBox(
                           width: width * 0.9,
                           child: DataTableWidget(
+                            isPredictive: true,
                             gases: allGasesTableList,
                             onChage: (int ind) {
                               for (var i = 0; i < allGasesTableList.length; i++) {
