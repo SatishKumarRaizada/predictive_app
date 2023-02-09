@@ -191,64 +191,6 @@ class _PredictiveHomeState extends State<PredictiveHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    width: width * 0.9,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: width * 0.9,
-                          child: DataTableWidget(
-                            isPredictive: true,
-                            gases: allGasesTableList,
-                            onChage: (int ind) {
-                              for (var i = 0; i < allGasesTableList.length; i++) {
-                                if (ind != i) {
-                                  allGasesTableList[i].isSelected = false;
-                                }
-                              }
-                              allGasesTableList[ind].isSelected =
-                                  !allGasesTableList[ind].isSelected;
-                              allGasesTableList[ind].date =
-                                  DateFormat('dd-MM-yyyy').format(selectedDate);
-                              getLocaleData(
-                                selectedDate,
-                                index: !allGasesTableList[ind].isSelected ? ind : -1,
-                                isSelected: allGasesTableList[ind].isSelected,
-                              );
-                              setState(() {});
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: width * 0.02),
-                // Work in progress
-                Container(
-                  height: 300,
-                  width: width * 0.3,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 0.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: CalendarDatePicker2(
-                    onValueChanged: (date) async {
-                      selectedDate = date[0] ?? DateTime.now();
-                      getLocaleData(selectedDate);
-                    },
-                    config: CalendarDatePicker2Config(
-                      calendarType: CalendarDatePicker2Type.single,
-                      calendarViewMode: DatePickerMode.day,
-                    ),
-                    initialValue: [selectedDate],
-                  ),
-                ),
-              ],
-            ),
             SizedBox(height: height * 0.02),
             const Text('Select gas'),
             SizedBox(height: height * 0.01),

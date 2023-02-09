@@ -38,36 +38,30 @@ class _HomePageState extends State<HomePage> {
   TextEditingController startDateInput = TextEditingController();
   TextEditingController endDateInput = TextEditingController();
   List<ChartData> chartData = <ChartData>[];
+  String? selectedGasName;
+  String dateFormatType = 'MM/dd/yyyy';
 
   @override
   void initState() {
     super.initState();
     startDateInput.text = "";
     endDateInput.text = "";
-    allGasesTableList[0].isSelected = true;
-    getLocaleData(selectedDate);
+    getLocaleData();
   }
 
   DateTime parseDate(String input) {
-    List<String> formats = [
-      'dd/MM/yyyy',
-      'dd/MM/yy',
-      'yyyy/MM/dd',
-      'MM/dd/yyyy',
-      'dd-MM-yyyy',
-      'dd-MM-yy',
-    ];
-
-    DateTime date = DateTime.now();
-    for (var format in formats) {
-      try {
-        date = DateFormat(format).parse(input);
-        break;
-      } catch (e) {
-        // continue looping if parse fails
-      }
+    if (input.isEmpty) return DateTime.now();
+    final cc = input.contains('/');
+    final splitChar = cc ? '/' : '-';
+    List<String> parts = input.split(" ")[0].split(splitChar);
+    if (parts[2].length < 4) {
+      parts[2] = '20${parts[2]}';
     }
-    return date;
+    DateFormat dateFormat = DateFormat(dateFormatType);
+    final d =
+        dateFormat.format(DateTime(int.parse(parts[2]), int.parse(parts[0]), int.parse(parts[1])));
+    DateTime dd = dateFormat.parse(d);
+    return dd;
   }
 
   double convertToDouble(dynamic value) {
@@ -88,38 +82,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   void updateTheChartData() async {
-    List<dynamic> data;
-    for (var i = 0; i < allGasesTableList.length; i++) {
-      if (allGasesTableList[i].isSelected == true) {
-        // gasName = allGasesTableList[i].name;
-      }
-    }
-    final checkLocalData = await getData();
-    if (checkLocalData != null) {
-      data = checkLocalData;
-    } else {
-      var result = await rootBundle.loadString("assets/data.csv");
-      final excelData = const CsvToListConverter().convert(result);
-      data = excelData;
-    }
+    final localData = await getLocaleData();
+    final name = localData[0];
+    final selectedGasIndex = name.indexOf(selectedGasName) > -1 ? name.indexOf(selectedGasName) : 1;
     var charatData = <ChartData>[];
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < localData.length; i++) {
       if (i > 0) {
-        final now = parseDate(data[i][0]);
+        final now = parseDate(localData[i][0]);
         final startDate = parseDate(startDateInput.text);
         final endDate = parseDate(endDateInput.text);
+        print('>>now>>$now>>>startDate>>>$startDate>>>endDate>>$endDate');
+        print(now.isAfter(startDate) && now.isBefore(endDate));
         if (now.isAfter(startDate) && now.isBefore(endDate)) {
-          double input = convertToDouble(data[i][1]);
+          double input = convertToDouble(localData[i][selectedGasIndex]);
           charatData.add(ChartData(now, input));
         }
       }
     }
-
     chartData = charatData;
     setState(() {});
   }
 
-  getLocaleData(DateTime date, {int index = -1, bool isSelected = true}) async {
+  dynamic getLocaleData() async {
     List<dynamic> data;
     final checkLocalData = await getData();
     if (checkLocalData != null) {
@@ -130,32 +114,7 @@ class _HomePageState extends State<HomePage> {
       data = excelData;
       saveData(data);
     }
-    var datafound = false;
-    for (var i = 0; i < data.length; i++) {
-      if (i > 0) {
-        final now = parseDate(data[i][0]);
-        if (now.compareTo(date) == 0) {
-          for (var j = 0; j < allGasesTableList.length; j++) {
-            allGasesTableList[j].date = DateFormat('dd-MM-yyyy').format(selectedDate);
-            final indes = allGasesTableList[j].index;
-            double gasValue = convertToDouble(data[i][indes + 1]);
-            allGasesTableList[j].ppm = gasValue;
-            allGasesTableList[j].status = getGasStatus(allGasesTableList[j].name, gasValue);
-            datafound = true;
-          }
-        }
-      }
-    }
-    if (datafound == false) {
-      for (var j = 0; j < allGasesTableList.length; j++) {
-        allGasesTableList[j].date = DateFormat('dd-MM-yyyy').format(selectedDate);
-        allGasesTableList[j].ppm = convertToDouble(0.0);
-      }
-    }
-    rawBarGroups = graphListData;
-    showingBarGroups = rawBarGroups;
-    gasLength = titleString.length;
-    setState(() {});
+    return data;
   }
 
   void saveData(List<dynamic> data) async {
@@ -204,13 +163,8 @@ class _HomePageState extends State<HomePage> {
                               }
                               allGasesTableList[ind].isSelected =
                                   !allGasesTableList[ind].isSelected;
-                              allGasesTableList[ind].date =
-                                  DateFormat('dd-MM-yyyy').format(selectedDate);
-                              getLocaleData(
-                                selectedDate,
-                                index: !allGasesTableList[ind].isSelected ? ind : -1,
-                                isSelected: allGasesTableList[ind].isSelected,
-                              );
+                              selectedGasName = allGasesTableList[ind].name;
+                              updateTheChartData();
                               setState(() {});
                             },
                           ),
@@ -231,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                   child: CalendarDatePicker2(
                     onValueChanged: (date) async {
                       selectedDate = date[0] ?? DateTime.now();
-                      getLocaleData(selectedDate);
+                      getLocaleData();
                     },
                     config: CalendarDatePicker2Config(
                       calendarType: CalendarDatePicker2Type.single,
@@ -254,16 +208,20 @@ class _HomePageState extends State<HomePage> {
                       child: TextField(
                         controller: startDateInput,
                         decoration: const InputDecoration(
-                            icon: Icon(Icons.calendar_today), labelText: "Start Date"),
+                          icon: Icon(Icons.calendar_today),
+                          labelText: "Start Date",
+                        ),
                         readOnly: true,
                         onTap: () async {
+                          final today = DateTime.now();
+
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime(1950),
                               lastDate: DateTime(2100));
                           if (pickedDate != null) {
-                            String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                            String formattedDate = DateFormat(dateFormatType).format(pickedDate);
                             setState(() {
                               startDateInput.text = formattedDate;
                             });
@@ -286,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                               firstDate: DateTime(1950),
                               lastDate: DateTime(2100));
                           if (pickedDate != null) {
-                            String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                            String formattedDate = DateFormat(dateFormatType).format(pickedDate);
                             setState(() {
                               endDateInput.text = formattedDate;
                             });
@@ -308,10 +266,22 @@ class _HomePageState extends State<HomePage> {
                 primaryYAxis: NumericAxis(isInversed: false),
                 series: <ChartSeries<ChartData, DateTime>>[
                   LineSeries<ChartData, DateTime>(
-                      dataSource: chartData,
-                      markerSettings: const MarkerSettings(isVisible: true),
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y),
+                    color: AppColor.appColor,
+                    enableTooltip: true,
+                    dataSource: chartData,
+                    onPointTap: (point) {
+                      print(point); //It can be used to display tapped value
+                    },
+                    animationDelay: 0.2,
+                    isVisibleInLegend: true,
+                    markerSettings: MarkerSettings(
+                      isVisible: true,
+                      color: AppColor.appColor,
+                      borderColor: AppColor.appColor,
+                    ),
+                    xValueMapper: (ChartData data, _) => data.x,
+                    yValueMapper: (ChartData data, _) => data.y,
+                  ),
                 ],
               ),
             ),

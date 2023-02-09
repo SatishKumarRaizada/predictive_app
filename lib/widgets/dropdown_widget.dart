@@ -28,7 +28,7 @@ class AppDropdown extends StatelessWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           hint: Text(hintText!),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(2),
           underline: null,
           icon: const Icon(CupertinoIcons.chevron_down),
           items: dropList.map((String value) {

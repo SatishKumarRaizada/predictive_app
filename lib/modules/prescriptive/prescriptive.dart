@@ -6,6 +6,7 @@ import 'package:predictive_app/modules/prescriptive/chart/duval_chart.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:predictive_app/modules/prescriptive/chart/duval copy.dart';
 
 class PrescriptiveHome extends StatefulWidget {
   const PrescriptiveHome({Key? key}) : super(key: key);
@@ -48,14 +49,17 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
                       width: width * 0.9,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 0.5),
+                        border: Border.all(
+                            color: AppColor.blackColor.withOpacity(0.2),
+                            width: 0.5),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
                         children: [
                           Row(
                             children: [
-                              const Text('Predictive Analytics of Gases Trends'),
+                              const Text(
+                                  'Predictive Analytics of Gases Trends'),
                               SizedBox(width: width * 0.02),
                               Chip(
                                 label: Text('Day', style: Styles.whiteText14),
@@ -70,17 +74,25 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
                           SizedBox(height: height * 0.02),
                           Column(children: <Widget>[
                             Table(
-                              border: TableBorder.all(color: AppColor.blackColor, width: 0.2),
+                              border: TableBorder.all(
+                                  color: AppColor.blackColor, width: 0.2),
                               children: [
                                 TableRow(
-                                  decoration: BoxDecoration(color: AppColor.appColor),
+                                  decoration:
+                                      BoxDecoration(color: AppColor.appColor),
                                   children: [
-                                    tableRowWidget("Gases", style: Styles.whiteText18),
-                                    tableRowWidget("Check", style: Styles.whiteText18),
-                                    tableRowWidget("Risk", style: Styles.whiteText18),
-                                    tableRowWidget("PPM", style: Styles.whiteText18),
-                                    tableRowWidget("Date", style: Styles.whiteText18),
-                                    tableRowWidget("Status", style: Styles.whiteText18),
+                                    tableRowWidget("Gases",
+                                        style: Styles.whiteText18),
+                                    tableRowWidget("Check",
+                                        style: Styles.whiteText18),
+                                    tableRowWidget("Risk",
+                                        style: Styles.whiteText18),
+                                    tableRowWidget("PPM",
+                                        style: Styles.whiteText18),
+                                    tableRowWidget("Date",
+                                        style: Styles.whiteText18),
+                                    tableRowWidget("Status",
+                                        style: Styles.whiteText18),
                                   ],
                                 ),
                                 TableRow(
@@ -134,7 +146,9 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
                     height: 300,
                     width: width * 0.3,
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColor.blackColor.withOpacity(0.2), width: 0.5),
+                      border: Border.all(
+                          color: AppColor.blackColor.withOpacity(0.2),
+                          width: 0.5),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: CalendarDatePicker2(
@@ -146,7 +160,8 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
               ),
               SizedBox(height: height * 0.02),
               const Text('Graph heading here', style: Styles.text20),
-              SizedBox(width: 400, height: 400, child: const DuvalPrescriptivegraph())
+              SizedBox(width: 400, height: 400, child: DrawTriangle()),
+              SizedBox(height: height * 0.02),
             ],
           ),
         ),
@@ -155,6 +170,7 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
   }
 
   Widget tableRowWidget(String value, {TextStyle style = Styles.lightText18}) {
-    return Padding(padding: const EdgeInsets.all(10), child: Text(value, style: style));
+    return Padding(
+        padding: const EdgeInsets.all(10), child: Text(value, style: style));
   }
 }

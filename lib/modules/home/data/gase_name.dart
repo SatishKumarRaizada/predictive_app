@@ -7,7 +7,7 @@ final allGasesTableList = <GasDetailModel>[
     risk: false,
     status: 'Normal',
     value: '9.4',
-    isSelected: false,
+    isSelected: true,
   ),
   GasDetailModel(
     date: '20/01/2023',
