@@ -91,8 +91,6 @@ class _HomePageState extends State<HomePage> {
         final now = parseDate(localData[i][0]);
         final startDate = parseDate(startDateInput.text);
         final endDate = parseDate(endDateInput.text);
-        print('>>now>>$now>>>startDate>>>$startDate>>>endDate>>$endDate');
-        print(now.isAfter(startDate) && now.isBefore(endDate));
         if (now.isAfter(startDate) && now.isBefore(endDate)) {
           double input = convertToDouble(localData[i][selectedGasIndex]);
           charatData.add(ChartData(now, input));
@@ -213,8 +211,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                         readOnly: true,
                         onTap: () async {
-                          final today = DateTime.now();
-
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),

@@ -39,38 +39,33 @@ class _PredictiveHomeState extends State<PredictiveHome> {
   TextEditingController startDateInput = TextEditingController();
   TextEditingController endDateInput = TextEditingController();
   List<ChartData> chartData = <ChartData>[];
-  final dropDowlIst = <String>[];
+  final dropDownList = <String>[];
   String? selectedGas = '';
+  String? selectedGasName;
+  String dateFormatType = 'MM/dd/yyyy';
 
   @override
   void initState() {
     super.initState();
     startDateInput.text = '';
     endDateInput.text = '';
-    allGasesTableList[0].isSelected = true;
-    getLocaleData(selectedDate);
+    getLocaleData();
+    getDropdownValues();
   }
 
   DateTime parseDate(String input) {
-    List<String> formats = [
-      'dd/MM/yyyy',
-      'dd/MM/yy',
-      'yyyy/MM/dd',
-      'MM/dd/yyyy',
-      'dd-MM-yyyy',
-      'dd-MM-yy',
-    ];
-
-    DateTime date = DateTime.now();
-    for (var format in formats) {
-      try {
-        date = DateFormat(format).parse(input);
-        break;
-      } catch (e) {
-        // continue looping if parse fails
-      }
+    if (input.isEmpty) return DateTime.now();
+    final cc = input.contains('/');
+    final splitChar = cc ? '/' : '-';
+    List<String> parts = input.split(" ")[0].split(splitChar);
+    if (parts[2].length < 4) {
+      parts[2] = '20${parts[2]}';
     }
-    return date;
+    DateFormat dateFormat = DateFormat(dateFormatType);
+    final d =
+        dateFormat.format(DateTime(int.parse(parts[2]), int.parse(parts[0]), int.parse(parts[1])));
+    DateTime dd = dateFormat.parse(d);
+    return dd;
   }
 
   double convertToDouble(dynamic value) {
@@ -91,28 +86,17 @@ class _PredictiveHomeState extends State<PredictiveHome> {
   }
 
   void updateTheChartData() async {
-    List<dynamic> data;
-    for (var i = 0; i < allGasesTableList.length; i++) {
-      dropDowlIst.add(allGasesTableList[i].name);
-    }
-
-    selectedGas = allGasesTableList[0].name;
-    final checkLocalData = await getData();
-    if (checkLocalData != null) {
-      data = checkLocalData;
-    } else {
-      var result = await rootBundle.loadString("assets/data.csv");
-      final excelData = const CsvToListConverter().convert(result);
-      data = excelData;
-    }
+    final localData = await getLocaleData();
+    final name = localData[0];
+    final selectedGasIndex = name.indexOf(selectedGasName) > -1 ? name.indexOf(selectedGasName) : 1;
     var charatData = <ChartData>[];
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < localData.length; i++) {
       if (i > 0) {
-        final now = parseDate(data[i][0]);
+        final now = parseDate(localData[i][0]);
         final startDate = parseDate(startDateInput.text);
         final endDate = parseDate(endDateInput.text);
         if (now.isAfter(startDate) && now.isBefore(endDate)) {
-          double input = convertToDouble(data[i][1]);
+          double input = convertToDouble(localData[i][selectedGasIndex]);
           charatData.add(ChartData(now, input));
         }
       }
@@ -121,9 +105,8 @@ class _PredictiveHomeState extends State<PredictiveHome> {
     setState(() {});
   }
 
-  getLocaleData(DateTime date, {int index = -1, bool isSelected = true}) async {
+  dynamic getLocaleData() async {
     List<dynamic> data;
-    dropDowlIst.clear();
     final checkLocalData = await getData();
     if (checkLocalData != null) {
       data = checkLocalData;
@@ -133,35 +116,7 @@ class _PredictiveHomeState extends State<PredictiveHome> {
       data = excelData;
       saveData(data);
     }
-    var datafound = false;
-    for (var i = 0; i < data.length; i++) {
-      if (i > 0) {
-        final now = parseDate(data[i][0]);
-        if (now.compareTo(date) == 0) {
-          for (var j = 0; j < allGasesTableList.length; j++) {
-            allGasesTableList[j].date = DateFormat('dd-MM-yyyy').format(selectedDate);
-            final indes = allGasesTableList[j].index;
-            double gasValue = convertToDouble(data[i][indes + 1]);
-            allGasesTableList[j].ppm = gasValue;
-            allGasesTableList[j].status = getGasStatus(allGasesTableList[j].name, gasValue);
-            datafound = true;
-          }
-        }
-      }
-    }
-    selectedGas = selectedGas!.isEmpty ? allGasesTableList[0].name : selectedGas;
-    if (datafound == false) {
-      for (var j = 0; j < allGasesTableList.length; j++) {
-        dropDowlIst.add(allGasesTableList[j].name);
-        allGasesTableList[j].date = DateFormat('dd-MM-yyyy').format(selectedDate);
-        allGasesTableList[j].ppm = convertToDouble(0.0);
-      }
-    }
-
-    rawBarGroups = graphListData;
-    showingBarGroups = rawBarGroups;
-    gasLength = titleString.length;
-    setState(() {});
+    return data;
   }
 
   void saveData(List<dynamic> data) async {
@@ -173,6 +128,15 @@ class _PredictiveHomeState extends State<PredictiveHome> {
     var box = await Hive.openBox('predictiveChart');
     final data = await box.get('predictiveChartData');
     return data;
+  }
+
+  void getDropdownValues() async {
+    final lists = await getLocaleData();
+    for (var i = 1; i < lists[0].length; i++) {
+      dropDownList.add(lists[0][i]);
+    }
+    selectedGas = lists[0][1];
+    setState(() {});
   }
 
   @override
@@ -198,23 +162,11 @@ class _PredictiveHomeState extends State<PredictiveHome> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AppDropdown(
-                  dropList: dropDowlIst,
+                  dropList: dropDownList,
                   valueSelected: selectedGas,
                   onSelect: (String value) {
-                    final ind = dropDowlIst.indexOf(value);
-                    selectedGas = value;
-                    for (var i = 0; i < allGasesTableList.length; i++) {
-                      if (ind != i) {
-                        allGasesTableList[i].isSelected = false;
-                      }
-                    }
-                    allGasesTableList[ind].isSelected = !allGasesTableList[ind].isSelected;
-                    allGasesTableList[ind].date = DateFormat('dd-MM-yyyy').format(selectedDate);
-                    getLocaleData(
-                      selectedDate,
-                      index: !allGasesTableList[ind].isSelected ? ind : -1,
-                      isSelected: allGasesTableList[ind].isSelected,
-                    );
+                    selectedGasName = value;
+                    updateTheChartData();
                     setState(() {});
                   },
                 ),
@@ -232,21 +184,19 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                       child: TextField(
                         controller: startDateInput,
                         decoration: const InputDecoration(
-                            icon: Icon(Icons.calendar_today), labelText: "Start Date"),
+                          icon: Icon(Icons.calendar_today),
+                          labelText: "Start Date",
+                        ),
                         readOnly: true,
                         onTap: () async {
-                          final dd = startDateInput.text.isEmpty
-                              ? DateFormat('dd-MM-yyyy').format(DateTime.now())
-                              : startDateInput.text;
-                          final startDate = DateFormat('dd-MM-yyyy').parse(dd);
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate: startDate,
-                            firstDate: DateTime.now(),
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1950),
                             lastDate: DateTime(2100),
                           );
                           if (pickedDate != null) {
-                            String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                            String formattedDate = DateFormat(dateFormatType).format(pickedDate);
                             startDateInput.text = formattedDate;
                             updateTheChartData();
                             setState(() {});
@@ -262,19 +212,14 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                             icon: Icon(Icons.calendar_today), labelText: "End Date"),
                         readOnly: true,
                         onTap: () async {
-                          final dd = startDateInput.text.isEmpty
-                              ? DateFormat('dd-MM-yyyy').format(DateTime.now())
-                              : startDateInput.text;
-                          final startDate = DateFormat('dd-MM-yyyy').parse(dd);
-                          final endDate = startDate.add(const Duration(days: 7));
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
-                            initialDate: startDate,
-                            firstDate: startDate.subtract(const Duration(hours: 1)),
-                            lastDate: endDate,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1950),
+                            lastDate: DateTime(2100),
                           );
                           if (pickedDate != null) {
-                            String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                            String formattedDate = DateFormat(dateFormatType).format(pickedDate);
                             setState(() {
                               endDateInput.text = formattedDate;
                             });

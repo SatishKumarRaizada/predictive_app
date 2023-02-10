@@ -11,7 +11,7 @@ class AppDropdown extends StatelessWidget {
   const AppDropdown({
     Key? key,
     required this.dropList,
-    this.hintText = 'Select role',
+    this.hintText = 'Select gas',
     required this.valueSelected,
     required this.onSelect,
     this.bgColor = const Color(0xffEBE8E7),
