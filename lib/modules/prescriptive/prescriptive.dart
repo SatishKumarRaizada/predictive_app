@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:predictive_app/modules/prescriptive/table/pres_table.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
 import 'package:predictive_app/modules/prescriptive/chart/duval copy.dart';
@@ -38,8 +39,12 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
   List<ChartData> chartData = <ChartData>[];
   String? selectedGasName;
   String dateFormatType = 'MM/dd/yyyy';
-  List<GasDetailModel> gasLists = [];
+  List<PrescriptiveModel> gasLists = [];
   List<String> gasNames = [];
+  List<String> mValues = [];
+  List<String> aValues = [];
+  List<String> eValues = [];
+  List<String> tValues = [];
 
   @override
   void initState() {
@@ -88,20 +93,26 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
     final selectedGasIndex = name.indexOf(selectedGasName) > -1 ? name.indexOf(selectedGasName) : 1;
     var charatData = <ChartData>[];
     //
-    final mIndex = localData[0].indexOf('Methane');
-    final eIndex = localData[0].indexOf('Ethane');
-    final aIndex = localData[0].indexOf('Acethylene');
-    final tIndex = localData[0].indexOf('TDCG');
+    final mIndex = localData[0].indexOf('Methane') > -1 ? localData[0].indexOf('Methane') : 0;
+    final eIndex = localData[0].indexOf('Ethane') > -1 ? localData[0].indexOf('Ethane') : 0;
+    final aIndex = localData[0].indexOf('Acethylene') > -1 ? localData[0].indexOf('Acethylene') : 0;
+    final tIndex = localData[0].indexOf('TDCG') > -1 ? localData[0].indexOf('TDCG') : 0;
 
-    //
+    //getting the table
+
     for (var i = 0; i < localData.length; i++) {
       if (i > 0) {
         final now = parseDate(localData[i][0]);
         final startDate = parseDate(startDateInput.text);
         final endDate = parseDate(endDateInput.text);
-        // gasLists.add(
-        //     //GasDetailModel(date: date, name: name, index: index, risk: risk, value: value),
-        //     );
+        gasLists.add(
+          PrescriptiveModel(
+            mValue: mIndex > 0 ? '${localData[i][mIndex]}' : '0',
+            eValue: eIndex > 0 ? '${localData[i][eIndex]}' : '0',
+            aValue: aIndex > 0 ? '${localData[i][aIndex]}' : '0',
+            tValue: tIndex > 0 ? '${localData[i][tIndex]}' : '0',
+          ),
+        );
         if (now.isAfter(startDate) && now.isBefore(endDate)) {
           double input = convertToDouble(localData[i][selectedGasIndex]);
           charatData.add(ChartData(now, input));
@@ -137,11 +148,47 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
     return data;
   }
 
+  String getMValue() {
+    mValues.clear();
+    for (var i = 0; i < 7; i++) {
+      mValues.add(gasLists[i].mValue);
+    }
+    final str = mValues.join(', ');
+    return str;
+  }
+
+  String getEValue() {
+    eValues.clear();
+    for (var i = 0; i < 7; i++) {
+      eValues.add(gasLists[i].eValue);
+    }
+    final str = eValues.join(', ');
+    return str;
+  }
+
+  String getAValue() {
+    aValues.clear();
+    for (var i = 0; i < 7; i++) {
+      aValues.add(gasLists[i].tValue);
+    }
+    final str = aValues.join(', ');
+    return str;
+  }
+
+  String getTValue() {
+    tValues.clear();
+    for (var i = 0; i < 7; i++) {
+      tValues.add(gasLists[i].tValue);
+    }
+    final str = tValues.join(', ');
+    return str;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.height;
-    final width = size.width;
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -150,40 +197,14 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                height: 50,
-                width: width * 0.4,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  border: Border.all(color: AppColor.appColor, width: 0.4),
-                ),
-                child: ListView.builder(
-                  itemCount: gases.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, index) {
-                    return Text(gases[index]);
-                  },
-                ),
-              ),
-              // Container(
-              //   child: ListView.builder(itemBuilder: (context, index) {
-              //     return
-              //   },),
-              // ),
-
-              // PrescriptiveTable(
-              //   isPredictive: true,
-              //   gases: presGases,
-              //   onChage: (int ind) {
-              //     for (var i = 0; i < allGasesTableList.length; i++) {
-              //       if (ind != i) {
-              //         allGasesTableList[i].isSelected = false;
-              //       }
-              //     }
-              //     setState(() {});
-              //   },
-              // ),
+              gasLists.isNotEmpty
+                  ? PreTableWidget(
+                      mVale: getMValue(),
+                      eVale: getEValue(),
+                      aVale: getAValue(),
+                      tVale: getTValue(),
+                    )
+                  : Container(),
               SizedBox(height: height * 0.02),
               const Text('Graph heading here', style: Styles.text20),
               const SizedBox(

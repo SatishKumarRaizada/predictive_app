@@ -204,3 +204,17 @@ class GasDetailModel {
     this.status = "Normal",
   });
 }
+
+class PrescriptiveModel {
+  String mValue;
+  String eValue;
+  String aValue;
+  String tValue;
+
+  PrescriptiveModel({
+    required this.mValue,
+    required this.eValue,
+    required this.aValue,
+    required this.tValue,
+  });
+}
