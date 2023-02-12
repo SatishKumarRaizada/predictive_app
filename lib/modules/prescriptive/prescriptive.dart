@@ -186,7 +186,16 @@ class _PrescriptiveHomeState extends State<PrescriptiveHome> {
               // ),
               SizedBox(height: height * 0.02),
               const Text('Graph heading here', style: Styles.text20),
-              //const SizedBox(width: 400, height: 400, child: DrawTriangle()),
+              const SizedBox(
+                width: 400,
+                height: 400,
+                child: DrawTriangle(
+                  accetelyone: 1.0,
+                  ethane: 3.0,
+                  methane: 4.0,
+                  tdcg: 5.0,
+                ),
+              ),
               SizedBox(height: height * 0.02),
             ],
           ),

@@ -4,10 +4,17 @@ import 'dart:math' as math;
 //import 'dart:html';
 
 class DrawTriangle extends StatelessWidget {
-  //double  methane
-  //double  ethane
-  //double  accetelyone
-  const DrawTriangle({super.key});
+  final double methane;
+  final double ethane;
+  final double accetelyone;
+  final double tdcg;
+  const DrawTriangle({
+    super.key,
+    required this.accetelyone,
+    required this.ethane,
+    required this.methane,
+    required this.tdcg,
+  });
 
   @override
   Widget build(BuildContext context) {

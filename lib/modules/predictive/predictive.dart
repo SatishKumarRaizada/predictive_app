@@ -213,6 +213,9 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                             icon: Icon(Icons.calendar_today), labelText: "End Date"),
                         readOnly: true,
                         onTap: () async {
+                          // final endDate = startDateInput.text;
+                          // final d = endDate.isEmpty ? DateTime.now() : DateFormat()
+                          // final dd = DateFormat(dateFormatType).format(date)
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
@@ -243,6 +246,13 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                 series: <ChartSeries<ChartData, DateTime>>[
                   LineSeries<ChartData, DateTime>(
                     dataSource: chartData,
+                    trendlines: <Trendline>[
+                      Trendline(
+                        type: TrendlineType.linear,
+                        forwardForecast: 7,
+                        color: AppColor.appColor,
+                      ),
+                    ],
                     markerSettings: const MarkerSettings(isVisible: true),
                     xValueMapper: (ChartData data, _) => data.x,
                     yValueMapper: (ChartData data, _) => data.y,
