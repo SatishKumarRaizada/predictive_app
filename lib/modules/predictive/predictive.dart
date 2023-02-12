@@ -1,17 +1,13 @@
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:csv/csv.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:predictive_app/modules/home/data/gase_name.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
-import 'package:predictive_app/modules/home/chart/table_content.dart';
 import 'package:predictive_app/widgets/dropdown_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:predictive_app/modules/home/data/gase_util.dart';
 
 class PredictiveHome extends StatefulWidget {
   const PredictiveHome({Key? key}) : super(key: key);
@@ -19,7 +15,7 @@ class PredictiveHome extends StatefulWidget {
   State<PredictiveHome> createState() => _PredictiveHomeState();
 }
 
-class _PredictiveHomeState extends State<PredictiveHome> {
+class _PredictiveHomeState extends State<PredictiveHome> with AutomaticKeepAliveClientMixin {
   final gases = ['Methane', 'Ethane', 'Acetylene'];
   final gasColors = [AppColor.appColor, AppColor.orangeColor, AppColor.redColor];
   List<List<dynamic>> data = [];
@@ -43,6 +39,9 @@ class _PredictiveHomeState extends State<PredictiveHome> {
   String? selectedGas = '';
   String? selectedGasName;
   String dateFormatType = 'MM/dd/yyyy';
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -143,7 +142,9 @@ class _PredictiveHomeState extends State<PredictiveHome> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.height;
-    final width = size.width;
+
+    super.build(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Page'),
