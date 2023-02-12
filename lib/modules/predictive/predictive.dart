@@ -165,6 +165,7 @@ class _PredictiveHomeState extends State<PredictiveHome> {
                   dropList: dropDownList,
                   valueSelected: selectedGas,
                   onSelect: (String value) {
+                    selectedGas = value;
                     selectedGasName = value;
                     updateTheChartData();
                     setState(() {});

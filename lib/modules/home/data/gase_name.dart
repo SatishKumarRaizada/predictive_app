@@ -141,6 +141,49 @@ final allGasesTableList = <GasDetailModel>[
   ),
 ];
 
+final presGases = <GasDetailModel>[
+  GasDetailModel(
+    date: '20/01/2023',
+    name: 'Methane',
+    index: 0,
+    ppm: 0.0,
+    risk: false,
+    status: 'Normal',
+    value: '9.4',
+    isSelected: true,
+  ),
+  GasDetailModel(
+    date: '20/01/2023',
+    name: 'Acetylene',
+    index: 2,
+    ppm: 0.0,
+    risk: false,
+    status: 'Normal',
+    value: '0.8',
+    isSelected: false,
+  ),
+  GasDetailModel(
+    date: '20/01/2023',
+    name: 'Ethane',
+    index: 3,
+    ppm: 0.0,
+    risk: false,
+    status: 'Normal',
+    value: '0.8',
+    isSelected: false,
+  ),
+  GasDetailModel(
+    date: '20/01/2023',
+    name: 'TDCG',
+    index: 8,
+    ppm: 0.0,
+    risk: false,
+    status: 'Normal',
+    value: '0.8',
+    isSelected: false,
+  ),
+];
+
 class GasDetailModel {
   final String name;
   final String value;

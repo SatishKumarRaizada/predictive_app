@@ -7,11 +7,11 @@ class DrawTriangle extends StatelessWidget {
   //double  methane
   //double  ethane
   //double  accetelyone
-  DrawTriangle();
+  const DrawTriangle({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 400,
       width: 500,
       child: CustomPaint(
@@ -39,14 +39,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 201, "dy": 366}
       ],
       "fill": "rgb(172,236,222)",
-      "label": {
-        "text": "D1",
-        "cx": 165,
-        "cy": 395,
-        "withLine": false,
-        "endX": null,
-        "endY": null
-      }
+      "label": {"text": "D1", "cx": 165, "cy": 395, "withLine": false, "endX": null, "endY": null}
     },
     {
       "points": [
@@ -57,14 +50,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 321, "dy": 256}
       ],
       "fill": 'rgb(51,51,153)',
-      "label": {
-        "text": 'D2',
-        "cx": 300,
-        "cy": 395,
-        "withLine": false,
-        "endX": null,
-        "endY": null
-      },
+      "label": {"text": 'D2', "cx": 300, "cy": 395, "withLine": false, "endX": null, "endY": null},
     },
     {
       "points": [
@@ -78,14 +64,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 281, "dy": 76}
       ],
       "fill": 'rgb(153,0,153)',
-      "label": {
-        "text": 'DT',
-        "cx": 245,
-        "cy": 60,
-        "withLine": true,
-        "endX": 280,
-        "endY": 55
-      },
+      "label": {"text": 'DT', "cx": 245, "cy": 60, "withLine": true, "endX": 280, "endY": 55},
     },
     {
       "points": [
@@ -94,14 +73,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 300, "dy": 40}
       ],
       "fill": 'rgb(255,0,0)',
-      "label": {
-        "text": 'PD',
-        "cx": 356,
-        "cy": 40,
-        "withLine": true,
-        "endX": 321,
-        "endY": 40
-      },
+      "label": {"text": 'PD', "cx": 356, "cy": 40, "withLine": true, "endX": 321, "endY": 40},
     },
     {
       "points": [
@@ -112,14 +84,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 300, "dy": 40}
       ],
       "fill": 'rgb(255,153,153)',
-      "label": {
-        "text": 'T1',
-        "cx": 375,
-        "cy": 70,
-        "withLine": true,
-        "endX": 340,
-        "endY": 75
-      },
+      "label": {"text": 'T1', "cx": 375, "cy": 70, "withLine": true, "endX": 340, "endY": 75},
     },
     {
       "points": [
@@ -129,14 +94,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 337, "dy": 115}
       ],
       "fill": 'rgb(255,204,0)',
-      "label": {
-        "text": 'T2',
-        "cx": 400,
-        "cy": 125,
-        "withLine": true,
-        "endX": 366,
-        "endY": 120
-      },
+      "label": {"text": 'T2', "cx": 400, "cy": 125, "withLine": true, "endX": 366, "endY": 120},
     },
     {
       "points": [
@@ -146,14 +104,7 @@ class CanvasDrawer extends CustomPainter {
         {"dx": 372, "dy": 248}
       ],
       "fill": 'rgb(0,0,0)',
-      "label": {
-        "text": 'T3',
-        "cx": 480,
-        "cy": 270,
-        "withLine": true,
-        "endX": 450,
-        "endY": 270
-      },
+      "label": {"text": 'T3', "cx": 480, "cy": 270, "withLine": true, "endX": 450, "endY": 270},
     },
   ];
 
@@ -163,8 +114,7 @@ class CanvasDrawer extends CustomPainter {
 
   Color stringToColor(String colorString) {
     // Extract the values between the parentheses
-    final values =
-        colorString.replaceAll("rgb(", "").replaceAll(")", "").split(",");
+    final values = colorString.replaceAll("rgb(", "").replaceAll(")", "").split(",");
 
     // Convert the values to integers
     final red = int.parse(values[0].trim());
@@ -203,11 +153,11 @@ class CanvasDrawer extends CustomPainter {
       canvas.drawPath(path, paint);
 
       if (segment['label']['withLine']) {
-        drawLineBoxedLabel(canvas, segments[i], labelFontsize.toDouble(),
-            labelFontface, labelPadding.toDouble());
+        drawLineBoxedLabel(
+            canvas, segments[i], labelFontsize.toDouble(), labelFontface, labelPadding.toDouble());
       } else {
-        drawBoxedLabel(canvas, segments[i], labelFontsize.toDouble(),
-            labelFontface, labelPadding.toDouble());
+        drawBoxedLabel(
+            canvas, segments[i], labelFontsize.toDouble(), labelFontface, labelPadding.toDouble());
       }
     }
 
@@ -219,15 +169,12 @@ class CanvasDrawer extends CustomPainter {
     ticklines(canvas, v2, v0, 9, 3.14 * 5 / 4, 20);
 
     // Draw molecule labels
-    moleculeLabel(canvas, v0, v1, 120, 3.14, '% CH4', labelFontsize.toDouble(),
-        labelFontface);
+    moleculeLabel(canvas, v0, v1, 120, 3.14, '% CH4', labelFontsize.toDouble(), labelFontface);
     // // Draw molecule labels
 
-    moleculeLabelC2(canvas, v1, v2, 100, 0, '% C2H4', labelFontsize.toDouble(),
-        labelFontface);
+    moleculeLabelC2(canvas, v1, v2, 100, 0, '% C2H4', labelFontsize.toDouble(), labelFontface);
 
-    moleculeLabel(canvas, v2, v0, 75, 3.14 / 2, '% C2H2',
-        labelFontsize.toDouble(), labelFontface);
+    moleculeLabel(canvas, v2, v0, 75, 3.14 / 2, '% C2H2', labelFontsize.toDouble(), labelFontface);
 
     drawTriangle(canvas);
     /* final data1 = 2333;
@@ -253,30 +200,21 @@ class CanvasDrawer extends CustomPainter {
   }
 */
 
-  void moleculeLabelC2(
-      Canvas canvas,
-      Offset start,
-      Offset end,
-      double offsetLength,
-      double angle,
-      String text,
-      double labelFontsize,
-      String labelFontface) {
+  void moleculeLabelC2(Canvas canvas, Offset start, Offset end, double offsetLength, double angle,
+      String text, double labelFontsize, String labelFontface) {
     final paint = Paint()
       ..color = const Color(0xFF000000)
       ..style = PaintingStyle.fill;
 
-    final center = Offset(start.dx + (end.dx - start.dx) * 0.5,
-        start.dy + (end.dy - start.dy) * 0.5);
+    final center =
+        Offset(start.dx + (end.dx - start.dx) * 0.5, start.dy + (end.dy - start.dy) * 0.5);
     final textPos = Offset(center.dx + offsetLength * math.cos(angle) - 35,
         center.dy + offsetLength * math.sin(angle));
 
     TextSpan span = TextSpan(text: text, style: TextStyle(color: paint.color));
 
-    TextPainter tp = TextPainter(
-        text: span,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr);
+    TextPainter tp =
+        TextPainter(text: span, textAlign: TextAlign.center, textDirection: TextDirection.ltr);
 
     tp.layout();
     tp.paint(canvas, textPos);
@@ -319,30 +257,21 @@ class CanvasDrawer extends CustomPainter {
     );
   }
 
-  void moleculeLabel(
-      Canvas canvas,
-      Offset start,
-      Offset end,
-      double offsetLength,
-      double angle,
-      String text,
-      double labelFontsize,
-      String labelFontface) {
+  void moleculeLabel(Canvas canvas, Offset start, Offset end, double offsetLength, double angle,
+      String text, double labelFontsize, String labelFontface) {
     final paint = Paint()
       ..color = const Color(0xFF000000)
       ..style = PaintingStyle.fill;
 
-    final center = Offset(start.dx + (end.dx - start.dx) * 0.5,
-        start.dy + (end.dy - start.dy) * 0.5);
-    final textPos = Offset(center.dx + offsetLength * math.cos(angle),
-        center.dy + offsetLength * math.sin(angle));
+    final center =
+        Offset(start.dx + (end.dx - start.dx) * 0.5, start.dy + (end.dy - start.dy) * 0.5);
+    final textPos = Offset(
+        center.dx + offsetLength * math.cos(angle), center.dy + offsetLength * math.sin(angle));
 
     TextSpan span = TextSpan(text: text, style: TextStyle(color: paint.color));
 
-    TextPainter tp = TextPainter(
-        text: span,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr);
+    TextPainter tp =
+        TextPainter(text: span, textAlign: TextAlign.center, textDirection: TextDirection.ltr);
 
     tp.layout();
     tp.paint(canvas, textPos);
@@ -385,8 +314,7 @@ class CanvasDrawer extends CustomPainter {
     );
   }
 
-  void drawLineBoxedLabel(
-      canvas, segment, double fontSize, String fontFace, double padding) {
+  void drawLineBoxedLabel(canvas, segment, double fontSize, String fontFace, double padding) {
     final cx = segment['label']['cx'].toDouble();
     final cy = segment['label']['cy'].toDouble();
     final textSeg = segment['label']['text'];
@@ -424,13 +352,11 @@ class CanvasDrawer extends CustomPainter {
     );
     // the boxed text
     canvas.drawRect(
-      Rect.fromLTRB(leftX, topY, leftX + textWidth + padding * 2,
-          topY + textHeight + padding * 2),
+      Rect.fromLTRB(leftX, topY, leftX + textWidth + padding * 2, topY + textHeight + padding * 2),
       Paint()..color = Colors.white,
     );
     canvas.drawRect(
-      Rect.fromLTRB(leftX, topY, leftX + textWidth + padding * 2,
-          topY + textHeight + padding * 2),
+      Rect.fromLTRB(leftX, topY, leftX + textWidth + padding * 2, topY + textHeight + padding * 2),
       Paint()
         ..color = Colors.black
         ..style = PaintingStyle.stroke
@@ -439,8 +365,7 @@ class CanvasDrawer extends CustomPainter {
     tp.paint(canvas, Offset(centerX - 6, centerY - textHeight / 2));
   }
 
-  void drawBoxedLabel(
-      canvas, segment, double fontsize, String fontface, double padding) {
+  void drawBoxedLabel(canvas, segment, double fontsize, String fontface, double padding) {
     final cx = segment['label']['cx'].toDouble();
     final cy = segment['label']['cy'].toDouble();
     final textSeg = segment['label']['text'];
@@ -503,8 +428,7 @@ class CanvasDrawer extends CustomPainter {
     );
   }
 
-  void ticklines(Canvas canvas, Offset start, Offset end, int count,
-      double angle, double length) {
+  void ticklines(Canvas canvas, Offset start, Offset end, int count, double angle, double length) {
     double dx = end.dx - start.dx;
     double dy = end.dy - start.dy;
 
@@ -518,8 +442,8 @@ class CanvasDrawer extends CustomPainter {
       int x1 = (x0 + length * math.cos(angle)).round();
       int y1 = (y0 + length * math.sin(angle)).round();
 
-      canvas.drawLine(Offset(x0.toDouble(), y0.toDouble()),
-          Offset(x1.toDouble(), y1.toDouble()), paint);
+      canvas.drawLine(
+          Offset(x0.toDouble(), y0.toDouble()), Offset(x1.toDouble(), y1.toDouble()), paint);
 
       if (i == 2 || i == 4 || i == 6 || i == 8) {
         double labelOffset = length * 3 / 4;
@@ -542,8 +466,7 @@ class CanvasDrawer extends CustomPainter {
     }
   }
 
-  void ticklineslll(canvas, Offset start, Offset end, int count, double angle,
-      double length) {
+  void ticklineslll(canvas, Offset start, Offset end, int count, double angle, double length) {
     double dx = end.dx - start.dx;
     double dy = end.dy - start.dy;
     canvas.context.lineWidth = 1;

@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:predictive_app/modules/home/data/gase_name.dart';
+import 'package:predictive_app/services/model/table_model.dart';
 import 'package:predictive_app/theme/app_color.dart';
 import 'package:predictive_app/theme/app_style.dart';
 import 'package:predictive_app/modules/home/chart/table_content.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:predictive_app/modules/home/data/gase_util.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   List<ChartData> chartData = <ChartData>[];
   String? selectedGasName;
   String dateFormatType = 'MM/dd/yyyy';
+  List<TableModel> tableLists = [];
 
   @override
   void initState() {
