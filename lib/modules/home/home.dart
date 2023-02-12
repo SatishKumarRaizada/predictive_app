@@ -191,13 +191,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   child: CalendarDatePicker2(
                     onValueChanged: (date) async {
                       selectedDate = date[0] ?? DateTime.now();
-                      var index;
                       for (var i = 0; i < allGasesTableList.length; i++) {
-                        if (allGasesTableList[i].name == selectedGasName) {
-                          allGasesTableList[i].date =
-                              DateFormat(dateFormatType).format(selectedDate);
-                          allGasesTableList[i].ppm = getValue();
-                        }
+                        allGasesTableList[i].date = DateFormat(dateFormatType).format(selectedDate);
+                        allGasesTableList[i].ppm = getValue();
                       }
                       setState(() {});
                       getLocaleData();
