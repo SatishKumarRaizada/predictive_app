@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:csv/csv.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -189,6 +191,15 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   child: CalendarDatePicker2(
                     onValueChanged: (date) async {
                       selectedDate = date[0] ?? DateTime.now();
+                      var index;
+                      for (var i = 0; i < allGasesTableList.length; i++) {
+                        if (allGasesTableList[i].name == selectedGasName) {
+                          allGasesTableList[i].date =
+                              DateFormat(dateFormatType).format(selectedDate);
+                          allGasesTableList[i].ppm = getValue();
+                        }
+                      }
+                      setState(() {});
                       getLocaleData();
                     },
                     config: CalendarDatePicker2Config(
@@ -316,6 +327,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
   Widget tableRowWidget(String value, {TextStyle style = Styles.lightText18}) {
     return Padding(padding: const EdgeInsets.all(10), child: Text(value, style: style));
+  }
+
+  double getValue() {
+    Random random = Random();
+    int randomNumber = random.nextInt(5);
+    return randomNumber.toDouble();
   }
 }
 
